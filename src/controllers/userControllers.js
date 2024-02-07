@@ -46,7 +46,7 @@ export const signUpUser = asyncHandler(async (req, res) => {
             password: hashedPassword
         })
         await user.save()
-        const createdUser = await User.findById(user._id).select("-password -__v");
+        const createdUser = await User.findById(user._id).select("-password -__v -createdAt -updatedAt");
         if (!createdUser) {
             throw new ApiError(500, "Something went wrong while registration")
         }
@@ -74,6 +74,18 @@ export const loginUser = asyncHandler(async (req, res) => {
         }
         const token = createToken(user._id, user.username, user.email, user.phoneNumber) // assigning token 
         return res.status(201).json(new ApiResponse(200, user, "User LoggedIn Successfully", token))
+    } catch (error) {
+        throw new ApiError(500, error?.message)
+    }
+})
+export const user = asyncHandler(async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new ApiError(404, "user not found")
+        }
+        return res.status(200).json(new ApiResponse(200, user))
     } catch (error) {
         throw new ApiError(500, error?.message)
     }

@@ -4,14 +4,18 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import userRouter from "./src/routes/userRoutes.js";
 import connectDB from "./src/db/index.js";
+import coinRouter from "./src/routes/coinRoutes.js";
+import cors from "cors";
 //----------------------------------------
 //app configuration
 dotenv.config();
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 //----------------------------------------
 //Routes
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/coin", coinRouter)
 //----------------------------------------
 //DB connection and Running Server
 connectDB()

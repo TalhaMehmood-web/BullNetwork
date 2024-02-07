@@ -19,7 +19,16 @@ const userSchema = new mongoose.Schema({
         required: true,
 
     },
+    coins: {
+        type: Number,
+        default: 0,
+    },
+    start: {
+        type: Boolean,
+        default: true
+    }
 
-})
+
+}, { timestamps: true })
 const User = mongoose.model("User", userSchema)
 export default User;
